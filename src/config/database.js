@@ -2,8 +2,12 @@ import mongoose from "mongoose";
 import config from "./config.js";
 
 async function connectDB() {
-    await mongoose.connect(config.MONGO_URI);
-    console.log("connected to DB")
+    try {
+        await mongoose.connect(config.MONGO_URI);
+        console.log("Connected to DB");
+    } catch (error) {
+        console.log("Database connection error:", error);
+    }
 }
 
 export default connectDB;
