@@ -290,14 +290,14 @@ message :"Logged out successfully"
 export async function verifyEmail(req, res) {
     const {otp , email} =req.body
 
-    const otpHash = crypto.createHash("sha256").update(otp.tostring()).digest("hex");
+    const otpHash = crypto.createHash("sha256").update(otp.toString()).digest("hex");
 
     const otpDoc = await otpModel.findOne({
         email,
         otpHash
     })
     if(!otpDoc) {
-        return res.status(400),json({
+        return res.status(400).json({
             message : "Invalid otp"
         })
     }
