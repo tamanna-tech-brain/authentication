@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
+
+import { refreshToken }  from "../controllers/auth.controller.js";
 const addressSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required: [true, "user is required"]
+        },
     city: {
         type: String,
         required: [true, " city is required"]
@@ -30,5 +37,5 @@ const addressSchema = new mongoose.Schema({
 
 )    
 
-const addressModel = mongoose.model("address", addressSchema)
-export default addressModel;
+const AddressModel = mongoose.model("address", addressSchema)
+export default AddressModel;
