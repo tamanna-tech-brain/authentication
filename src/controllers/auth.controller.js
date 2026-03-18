@@ -104,7 +104,8 @@ export async function login(req, res) {
     res.status(401).json
 ({
     message: "Invalid email or password"
-})   }
+});
+}
 
 if(!user.verified) {
     return res.status(401).json({
@@ -120,6 +121,16 @@ const isPasswordValid = hashedPassword === user.password;
             message: "Invalid email or password"
         });
 }
+
+const address = await addressModel.create({
+       userId: user._id,
+       city: "Default City",
+       zip: "000000",
+       state: "Default State",
+       country: "Default Country",
+       line2: "Default line2",
+       line3: "Default line3"
+   });
  
 const refreshToken = jwt.sign({
     id: user._id
@@ -127,6 +138,15 @@ const refreshToken = jwt.sign({
 {
     expiresIn: "7d"
 }
+)
+
+const accessToken = jwt.sign({
+    id: user._id,
+    // sessionId: session._id
+}, config.JWT_SECRET,
+ {
+    expiresIn: "15m"
+ }
 )
 const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
 
@@ -137,24 +157,9 @@ const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest
     // ip: req.ip,
     // userAgent: req.headers["user-agent"]
 // })
-const address = await addressModel.create({
-    user: user._id,
-    city: "Default City",
-    zip: "000000",
-    state: "Default State",
-    country: "Default Country",
-    line2: "Default line2",
-    line3: "Default line3"
-})
 
-const accessToken = jwt.sign({
-    id: user._id,
-    // sessionId: session._id
-}, config.JWT_SECRET,
- {
-    expiresIn: "15m"
- }
-)
+
+
 
 res.cookie("refreshToken", refreshToken , {
     httpOnly:true,

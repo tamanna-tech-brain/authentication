@@ -1,9 +1,11 @@
 import { Router } from "express";
-import *as addresscontroller from "../controllers/address.controller.js"
+import { createAddress, getAddressById, deleteAddressById, updateAddressById} from "../controllers/address.controller.js"
+import { authMiddleware } from "../utils/middleware.js";
 const addressRouter = Router();
 
-addressRouter.post("/create", addresscontroller.createAddress)
-addressRouter.get("/get", addresscontroller.getAllAddress)
-addressRouter.post("/delete/:id", addresscontroller.deleteAddressById)
-addressRouter.post("/update/:id", addresscontroller.updateAddress)
+
+addressRouter.post("/create", authMiddleware, createAddress)
+addressRouter.get("/get/:id", authMiddleware, getAddressById)
+addressRouter.post("/delete/:id", authMiddleware, deleteAddressById)
+addressRouter.post("/update/:id", authMiddleware, updateAddressById)
 export default addressRouter;

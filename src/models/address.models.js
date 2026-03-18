@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import { authMiddleware } from "../utils/middleware.js";
 
 import { refreshToken }  from "../controllers/auth.controller.js";
 const addressSchema = new mongoose.Schema({
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "User",
         required: [true, "user is required"]
         },
     city: {
